@@ -1,0 +1,12 @@
+package:
+  name: js-date
+  dependencies:
+    - datetime
+    - effect
+    - exceptions
+    - foreign
+    - now
+    - prelude
+workspace:
+  packageSet:
+    registry: 77.10.1
