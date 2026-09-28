@@ -144,8 +144,12 @@ let parse (dateString: obj) : obj =
     let eff (u: obj) =
         match dateString with
         | :? string as s ->
-            let s' = s.Replace("GMT", "")
-            match DateTimeOffset.TryParse(s') with
+            let s' = s.Replace("GMT", "").Trim()
+            // V8 also accepts the time separated by `:` (e.g. `2022-01-01:13:45Z`).
+            let s'' =
+                if s'.Length > 10 && s'.[10] = ':' then s'.Substring(0, 10) + "T" + s'.Substring(11)
+                else s'
+            match DateTimeOffset.TryParse(s'') with
             | (true, dt) -> (dt - unixEpoch).TotalMilliseconds :> obj
             | _ -> Double.NaN :> obj
         | _ -> Double.NaN :> obj
